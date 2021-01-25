@@ -132,8 +132,9 @@ export function layout({
   size,
   words,
 }) {
-  const MAX_LAYOUT_ATTEMPTS = 10;
-  const SHRINK_FACTOR = 0.95;
+  const MAX_LAYOUT_ATTEMPTS = options.maxLayoutAttempts  || 10;
+  const SHRINK_FACTOR = options.shrinkFactor  || 0.95;
+  const WORD_REMOVAL_FRACTION = options.wordRemovalFraction || 0.1;
   const {
     deterministic,
     enableOptimizations,
@@ -195,7 +196,7 @@ export function layout({
         const fontScale = getFontScale(sortedWords, fontSizes, scale);
         return fontScale(word.value);
       })
-      .on('end', computedWords => {
+      .on('end', (computedWords, bounds) => {
         /** KNOWN ISSUE: https://github.com/jasondavies/d3-cloud/issues/36
          * Recursively layout and decrease font-sizes by a SHRINK_FACTOR.
          * Bail out with a warning message after MAX_LAYOUT_ATTEMPTS.
@@ -226,6 +227,10 @@ export function layout({
             selection,
             words: computedWords,
           });
+          if(callbacks.onEnd && typeof callbacks.onEnd === "function") {
+            console.log("onEnd fn called");
+            callbacks.onEnd(computedWords, bounds);
+          }
         }
       })
       .start();

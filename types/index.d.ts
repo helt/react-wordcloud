@@ -20,6 +20,8 @@ type WordToStringCallback = (word: Word) => void;
 
 type WordEventCallback = (word: Word, event?: MouseEvent) => void;
 
+type LayoutEventCallback = (words: Word[], bounds: [{x:number,y:number},{x:number,y:number}]) => void;
+
 type Optional<T> = {
   [P in keyof T]?: T[P];
 };
@@ -48,6 +50,8 @@ export interface Callbacks {
    * Capture the word and mouse event on mouse over.
    */
   onWordMouseOver?: WordEventCallback;
+  //
+  onEnd?: LayoutEventCallback;
 }
 
 export type CallbacksProp = Optional<Callbacks>;
@@ -127,6 +131,27 @@ export interface Options {
    * Sets the animation transition time in milliseconds.
    */
   transitionDuration: number;
+
+  /**
+   * Configure relayout attempts before aborting
+   */
+  maxLayoutAttempts?: number;
+
+  /**
+   * Configure shrink factor for relayout attempts. Shrinks the font size.
+   * Produces sparse layout. Be cautious when changing this; consider
+   * wordRemovalFraction before.
+   */
+  shrinkFactor?: number;
+
+  /**
+   * Configure word removal for relayout attempts. Excludes given ratio of Words
+   * array from rendering. Does not help if largest word is too large. Example:
+   * `wordRemovalFraction: 0.33` would remove the lower 33% of words
+   * (rounded up to remove at least 1 item).
+   */
+  wordRemovalFraction?: number
+
 }
 
 export type OptionsProp = Optional<Options>;
