@@ -43,15 +43,15 @@ export function render({ callbacks, options, random, selection, words }) {
   let tooltipInstance;
   const vizWords = selection.selectAll('text').data(words);
   vizWords.join(
-    enter => {
+    (enter) => {
       let text = enter
         .append('text')
-        .on('click', word => {
+        .on('click', (word) => {
           if (onWordClick) {
             onWordClick(word, event);
           }
         })
-        .on('mouseover', word => {
+        .on('mouseover', (word) => {
           if (
             enableTooltip &&
             (!tooltipInstance || tooltipInstance.isDestroyed)
@@ -72,7 +72,7 @@ export function render({ callbacks, options, random, selection, words }) {
             onWordMouseOver(word, event);
           }
         })
-        .on('mouseout', word => {
+        .on('mouseout', (word) => {
           if (tooltipInstance && !tooltipInstance.state.isVisible) {
             tooltipInstance.destroy();
           }
@@ -90,12 +90,12 @@ export function render({ callbacks, options, random, selection, words }) {
         .attr('transform', 'translate(0, 0) rotate(0)');
 
       if (typeof textAttributes === 'object') {
-        Object.keys(textAttributes).forEach(key => {
+        Object.keys(textAttributes).forEach((key) => {
           text = text.attr(key, textAttributes[key]);
         });
       }
 
-      text = text.call(enter =>
+      text = text.call((enter) =>
         enter
           .transition()
           .duration(transitionDuration)
@@ -104,7 +104,7 @@ export function render({ callbacks, options, random, selection, words }) {
           .text(getText),
       );
     },
-    update => {
+    (update) => {
       update
         .transition()
         .duration(transitionDuration)
@@ -114,7 +114,7 @@ export function render({ callbacks, options, random, selection, words }) {
         .attr('transform', getTransform)
         .text(getText);
     },
-    exit => {
+    (exit) => {
       exit
         .transition()
         .duration(transitionDuration)
@@ -132,9 +132,10 @@ export function layout({
   size,
   words,
 }) {
-  const MAX_LAYOUT_ATTEMPTS = options.maxLayoutAttempts  || 10;
-  const SHRINK_FACTOR = options.shrinkFactor  || 0.95;
+  const MAX_LAYOUT_ATTEMPTS = options.maxLayoutAttempts || 10;
+  const SHRINK_FACTOR = options.shrinkFactor || 0.95;
   const WORD_REMOVAL_FRACTION = options.wordRemovalFraction || 0.1;
+  console.log("wrf", WORD_REMOVAL_FRACTION);
   const {
     deterministic,
     enableOptimizations,
@@ -192,7 +193,7 @@ export function layout({
     }
 
     cloud
-      .fontSize(word => {
+      .fontSize((word) => {
         const fontScale = getFontScale(sortedWords, fontSizes, scale);
         return fontScale(word.value);
       })
@@ -207,8 +208,9 @@ export function layout({
         ) {
           if (attempts === MAX_LAYOUT_ATTEMPTS) {
             console.warn(
-              `Unable to layout ${sortedWords.length -
-                computedWords.length} word(s) after ${attempts} attempts.  Consider: (1) Increasing the container/component size. (2) Lowering the max font size. (3) Limiting the rotation angles.`,
+              `Unable to layout ${
+                sortedWords.length - computedWords.length
+              } word(s) after ${attempts} attempts.  Consider: (1) Increasing the container/component size. (2) Lowering the max font size. (3) Limiting the rotation angles.`,
             );
           }
 
@@ -227,8 +229,8 @@ export function layout({
             selection,
             words: computedWords,
           });
-          if(callbacks.onEnd && typeof callbacks.onEnd === "function") {
-            console.log("onEnd fn called");
+          if (callbacks.onEnd && typeof callbacks.onEnd === 'function') {
+            console.log('onEnd fn called');
             callbacks.onEnd(computedWords, bounds);
           }
         }
