@@ -5,6 +5,11 @@
   "license": "MIT",
   "repository": "https://git.igd-r.fraunhofer.de/inode/react-wordcloud",
   "bugs": "https://github.com/chrisrzhou/react-wordcloud/issues",
+  "publishConfig": {
+    "registry": "https://git.igd-r.fraunhofer.de/api/v4/projects/1817/packages/npm/",
+    "@inode:registry": "https://git.igd-r.fraunhofer.de/api/v4/projects/1817/packages/npm/",
+    "access": "restricted"
+  },
   "author": "Chris Zhou <chrisrzhou@pm.me> (https://chrisrzhou.io)",
   "contributors": [{
     "name": "Hendrik Lücke-Tieke",
@@ -19,11 +24,13 @@
   "scripts": {
     "build": "microbundle --jsx React.createElement",
     "build:docs": "docz build",
+    "build:tsc": "tsc",
     "clean": "rimraf dist",
     "clean:docs": "rimraf .docz",
     "docs": "docz dev",
-    "lint": "xo --fix; tsc",
-    "prepare": "yarn run clean && yarn run build"
+    "lint": "run-s lint:fix build:tsc",
+    "lint:fix": "xo --fix src/ docs/",
+    "prepare": "run-s clean build"
   },
   "main": "dist/index.js",
   "module": "dist/index.module.js",
@@ -72,7 +79,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run prepare && npm run lint"
+      "pre-push": "run-s prepare lint"
     }
   },
   "prettier": {
