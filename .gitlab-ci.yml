@@ -5,9 +5,11 @@ stages:
 
 before_script:
   - cp $NPM_RC ~/.npmrc
+  - echo "//git.igd-r.fraunhofer.de/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
 
 deploy:
   stage: deploy
   script:
-    - echo "//gitlab.example.com/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}">.npmrc
-    - npm publish
+    - yarn ci
+    - yarn run build
+    - yarn publish

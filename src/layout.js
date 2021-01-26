@@ -135,7 +135,7 @@ export function layout({
   const MAX_LAYOUT_ATTEMPTS = options.maxLayoutAttempts || 10;
   const SHRINK_FACTOR = options.shrinkFactor || 0.95;
   const WORD_REMOVAL_FRACTION = options.wordRemovalFraction || 0.1;
-  console.log("wrf", WORD_REMOVAL_FRACTION);
+  console.log('wrf', WORD_REMOVAL_FRACTION);
   const {
     deterministic,
     enableOptimizations,
