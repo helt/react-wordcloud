@@ -134,8 +134,7 @@ export function layout({
 }) {
   const MAX_LAYOUT_ATTEMPTS = options.maxLayoutAttempts || 10;
   const SHRINK_FACTOR = options.shrinkFactor || 0.95;
-  const WORD_REMOVAL_FRACTION = options.wordRemovalFraction || 0.1;
-  console.log('wrf', WORD_REMOVAL_FRACTION);
+  // const WORD_REMOVAL_FRACTION = options.wordRemovalFraction || 0.1;
   const {
     deterministic,
     enableOptimizations,
@@ -230,7 +229,6 @@ export function layout({
             words: computedWords,
           });
           if (callbacks.onEnd && typeof callbacks.onEnd === 'function') {
-            console.log('onEnd fn called');
             callbacks.onEnd(computedWords, bounds);
           }
         }
